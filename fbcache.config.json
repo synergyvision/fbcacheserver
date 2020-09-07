@@ -1,0 +1,18 @@
+{
+    "read_only": true,    
+    "firestore": [
+        {
+            "name": "users",
+            "refresh": "2 m"
+        }
+    ],
+    "realtime": [
+        {
+            "name": "persons",
+            "start": "03-09-2020 06:00 pm",
+            "period": "2 d",
+            "read_only": false
+        }
+    ],
+    "max_size": "50 b"
+}

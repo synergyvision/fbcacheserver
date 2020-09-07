@@ -2,7 +2,7 @@
   "name": "fbcache-servidor",
   "version": "0.0.1",
   "description": "Test server for the FBCache library",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "directories": {
     "doc": "docs"
   },
@@ -12,7 +12,8 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "start": "npm run build && node dist/index.js",
-    "start:dev": "babel-node src/index.js"
+    "start:deploy": "node dist/index.js",
+    "start:dev": "nodemon --exec babel-node src/index.js"
   },
   "repository": {
     "type": "git",
