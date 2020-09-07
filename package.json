@@ -12,7 +12,6 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "start": "npm run build && node dist/index.js",
-    "start:deploy": "node dist/index.js",
     "start:dev": "nodemon --exec babel-node src/index.js"
   },
   "repository": {
