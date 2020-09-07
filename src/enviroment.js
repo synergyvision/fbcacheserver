@@ -1,4 +1,5 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== "production")
+    require('dotenv').config()
 
 export const config = {
     PORT : process.env.PORT,
