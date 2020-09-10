@@ -9,8 +9,8 @@
     "realtime": [
         {
             "name": "persons",
-            "start": "03-09-2020 06:00 pm",
-            "period": "2 d",
+            "period": "3 m",
+            "start": "2020-09-10 12:38:30 am",
             "read_only": false
         }
     ],

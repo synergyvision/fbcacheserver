@@ -2,8 +2,9 @@ import express from 'express';
 import morgan from 'morgan';
 import { config } from "../enviroment";
 import { logger } from "../utils/logger";
-import { FBCache } from "fbcache";
+import { FBCache, service } from "fbcache";
 import * as fbcConfig from "../../fbcache.config.json";
+import { apiRouter } from "../routes/api.routes";
 
 const firebaseCredential = {
     type: config.CREDENTIAL_FILE_TYPE,
@@ -29,12 +30,15 @@ app.use(express.json());
 app.set('port', config.PORT || 3000);
 
 // ROUTES
-app.use('/api', (req, res) => {
+app.get('/', (req, res) => {
     res.json("FBCache Server is running")
 });
+app.use('/api', apiRouter);
 
 // ERROR HANDLER
 app.use(function(err, req, res, next) {
     logger.error(err.message);
     res.status(500).send('Something broke!');
 });
+
+process.on('unhandledRejection', (reason, p) => {});
