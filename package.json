@@ -1,0 +1,47 @@
+{
+  "name": "fbcache-servidor",
+  "version": "0.0.1",
+  "description": "Test server for the FBCache library",
+  "main": "dist/index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "engines": {
+    "node": "12.18.3"
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "start": "node dist/index.js",
+    "start:dev": "nodemon --exec babel-node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/synergyvision/fbcacheserver.git"
+  },
+  "keywords": [
+    "fbcache",
+    "js",
+    "express",
+    "winston"
+  ],
+  "author": "Luis Fuentes <luisrf0540@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/synergyvision/fbcacheserver/issues"
+  },
+  "homepage": "https://github.com/synergyvision/fbcacheserver#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fbcache": "git+https://github.com/synergyvision/fbcache.git#dev",
+    "morgan": "^1.10.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "nodemon": "^2.0.4"
+  }
+}
