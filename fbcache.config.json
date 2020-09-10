@@ -3,13 +3,13 @@
     "firestore": [
         {
             "name": "users",
-            "refresh": "2 m"
+            "refresh": "10 s"
         }
     ],
     "realtime": [
         {
             "name": "persons",
-            "period": "3 m",
+            "period": "30 s",
             "start": "2020-09-10 12:38:30 am",
             "read_only": false
         }
