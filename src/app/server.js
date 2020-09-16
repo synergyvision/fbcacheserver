@@ -1,10 +1,22 @@
 import express from 'express';
 import morgan from 'morgan';
+import axios from "axios";
 import { config } from "../enviroment";
 import { logger } from "../utils/logger";
-import { FBCache, service } from "fbcache";
-import * as fbcConfig from "../../fbcache.config.json";
+import { FBCache } from "fbcache";
 import { apiRouter } from "../routes/api.routes";
+
+const initFBCache = async (credential) => {
+    let fbcConfig = null;
+    if (config.CONFIG === "local")
+    fbcConfig = require(config.CONFIG_LOCATION);
+    else if (config.CONFIG === "web") {
+        const response = await axios.get(config.CONFIG_LOCATION);
+        fbcConfig = response.data;
+    }
+    FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+    logger.info("FBCache is ready");
+};
 
 const firebaseCredential = {
     type: config.CREDENTIAL_FILE_TYPE,
@@ -19,7 +31,7 @@ const firebaseCredential = {
     client_x509_cert_url: config.CREDENTIAL_FILE_CLIENT_CERT
 };
 
-FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, firebaseCredential);
+initFBCache(firebaseCredential);
 export const app = express();
 
 // MIDDLEWARES
