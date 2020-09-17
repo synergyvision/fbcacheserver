@@ -1,0 +1,4 @@
+exclude:
+  - "docs/README.md"
+  - "docs/informe/"
+  - "docs/propuesta/"
