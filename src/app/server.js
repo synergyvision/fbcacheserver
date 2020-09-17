@@ -1,9 +1,25 @@
 import express from 'express';
 import morgan from 'morgan';
+import axios from "axios";
 import { config } from "../enviroment";
 import { logger } from "../utils/logger";
 import { FBCache } from "fbcache";
-import * as fbcConfig from "../../fbcache.config.json";
+import { apiRouter } from "../routes/api.routes";
+
+const initFBCache = async (credential) => {
+    let fbcConfig = null;
+    if (config.CONFIG === "local"){
+        fbcConfig = require(config.CONFIG_LOCATION);
+        FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+        logger.info("FBCache is initialized - config in local");
+    }
+    else if (config.CONFIG === "web") {
+        const response = await axios.get(config.CONFIG_LOCATION);
+        fbcConfig = response.data;
+        FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+        logger.info("FBCache is initialized - config in web");
+    }
+};
 
 const firebaseCredential = {
     type: config.CREDENTIAL_FILE_TYPE,
@@ -18,7 +34,7 @@ const firebaseCredential = {
     client_x509_cert_url: config.CREDENTIAL_FILE_CLIENT_CERT
 };
 
-FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, firebaseCredential);
+initFBCache(firebaseCredential);
 export const app = express();
 
 // MIDDLEWARES
@@ -29,12 +45,15 @@ app.use(express.json());
 app.set('port', config.PORT || 3000);
 
 // ROUTES
-app.use('/api', (req, res) => {
+app.get('/', (req, res) => {
     res.json("FBCache Server is running")
 });
+app.use('/api', apiRouter);
 
 // ERROR HANDLER
 app.use(function(err, req, res, next) {
     logger.error(err.message);
     res.status(500).send('Something broke!');
 });
+
+process.on('unhandledRejection', (reason, p) => {});

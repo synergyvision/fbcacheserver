@@ -3,16 +3,17 @@
     "firestore": [
         {
             "name": "users",
-            "refresh": "2 m"
+            "refresh": "1 m",
+            "read_only": false
         }
     ],
     "realtime": [
         {
             "name": "persons",
-            "start": "03-09-2020 06:00 pm",
-            "period": "2 d",
+            "period": "2 m",
+            "start": "2020-09-17 12:38:30 am",
             "read_only": false
         }
     ],
-    "max_size": "50 b"
+    "max_size": "50 MB"
 }

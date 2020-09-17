@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import { logger } from "./utils/logger";
 import { app } from './app/server';
 
