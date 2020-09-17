@@ -19,4 +19,23 @@ controller.getAll = async (req, res, next) => {
     }
 }
 
+controller.insert = async (req, res, next) => {
+    const info = req.body;
+    let resp = null;
+    logger.info(`[${context}] insert`);
+    try {
+        if(info.data)
+            resp = await FBCache.insert(service.FIRESTORE, "users", info.data, info.id);
+        else
+            resp = await FBCache.insert(service.FIRESTORE, "users", info.data);
+        if(resp.updateCache)
+            logger.info(`[${context}] insert update cache`);
+        else
+            logger.warn(`[${context}] insert don't update cache`);
+        res.json(resp);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const usersController = controller;

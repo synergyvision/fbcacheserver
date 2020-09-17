@@ -8,14 +8,17 @@ import { apiRouter } from "../routes/api.routes";
 
 const initFBCache = async (credential) => {
     let fbcConfig = null;
-    if (config.CONFIG === "local")
-    fbcConfig = require(config.CONFIG_LOCATION);
+    if (config.CONFIG === "local"){
+        fbcConfig = require(config.CONFIG_LOCATION);
+        FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+        logger.info("FBCache is initialized - config in local");
+    }
     else if (config.CONFIG === "web") {
         const response = await axios.get(config.CONFIG_LOCATION);
         fbcConfig = response.data;
+        FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+        logger.info("FBCache is initialized - config in web");
     }
-    FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
-    logger.info("FBCache is ready");
 };
 
 const firebaseCredential = {
