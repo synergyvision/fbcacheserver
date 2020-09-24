@@ -11,9 +11,10 @@
         {
             "name": "persons",
             "period": "2 m",
-            "start": "2020-09-17 12:38:30 am",
+            "start": "2020-09-24 12:38:30 am",
             "read_only": false
         }
     ],
-    "max_size": "50 MB"
+    "max_size": "50 MB",
+    "logs": "debug"
 }

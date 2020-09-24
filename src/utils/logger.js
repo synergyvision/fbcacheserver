@@ -1,11 +1,12 @@
 import { createLogger, format, transports } from 'winston';
+import { loggerController } from "../services/logger/logger.controller";
 
 export const logger = createLogger({
     format: format.combine(
         format.simple(),
-        format.timestamp(),
-        format.colorize({ all: true }),
-        format.printf(info => `[${info.timestamp}] - ${info.level} - ${info.message}`)
+        /*format.timestamp(),
+        format.colorize({ all: true }),*/
+        format.printf(info => `${info.level.toUpperCase()} - ${info.message}`)
     ),
     transports: [
         new transports.Console({
@@ -16,6 +17,6 @@ export const logger = createLogger({
 
 logger.stream = {
     write: function(message, encoding){
-        logger.info(message.slice(0, -1));
+        loggerController.info(message.slice(0, -1));
     },
 };
