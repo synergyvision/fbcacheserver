@@ -1,5 +1,6 @@
 import { loggerController } from "../logger/logger.controller";
 import { FBCache, service } from "fbcache";
+const util = require('util')
 
 const controller = {};
 
@@ -14,6 +15,7 @@ controller.getAll = async (req, res, next) => {
             loggerController.info(`[${context}] get users from cache`);
         else
             loggerController.warn(`[${context}] get users from Firestore`);
+        loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
         next(error);
@@ -24,7 +26,7 @@ controller.insert = async (req, res, next) => {
     const info = req.body;
     let resp = null;
     loggerController.debug(`[${context}] insert`);
-    loggerController.debug(`body recibed: ${info}`);
+    loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: users`);
     try {
         resp = await FBCache.insert(service.FIRESTORE, "users", info);
@@ -32,7 +34,7 @@ controller.insert = async (req, res, next) => {
             loggerController.info(`[${context}] insert refreshed cache`);
         else
             loggerController.warn(`[${context}] insert don't refreshed cache`);
-        loggerController.debug(`FBCache response: ${resp}`);
+        loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
         next(error);
@@ -45,7 +47,7 @@ controller.insertWithID = async (req, res, next) => {
     let resp = null;
     loggerController.debug(`[${context}] insertWithID`);
     loggerController.debug(`param 'id' recibed: ${id}`);
-    loggerController.debug(`body recibed: ${info}`);
+    loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: users`);
     try {
         resp = await FBCache.insert(service.FIRESTORE, "users", info, id);
@@ -53,7 +55,7 @@ controller.insertWithID = async (req, res, next) => {
             loggerController.info(`[${context}] insert refreshed cache`);
         else
             loggerController.warn(`[${context}] insert don't refreshed cache`);
-        loggerController.debug(`FBCache response: ${resp}`);
+        loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
         next(error);
@@ -66,7 +68,7 @@ controller.update = async (req, res, next) => {
     let resp = null;
     loggerController.debug(`[${context}] update`);
     loggerController.debug(`param 'id' recibed: ${id}`);
-    loggerController.debug(`body recibed: ${info}`);
+    loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: users`);
     try {
         resp = await FBCache.update(service.FIRESTORE, "users", info, id);
@@ -74,7 +76,7 @@ controller.update = async (req, res, next) => {
             loggerController.info(`[${context}] update refreshed cache`);
         else
             loggerController.warn(`[${context}] update don't refreshed cache`);
-        loggerController.debug(`FBCache response: ${resp}`);
+        loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
         next(error);
@@ -86,14 +88,14 @@ controller.delete = async (req, res, next) => {
     let resp = null;
     loggerController.debug(`[${context}] delete`);
     loggerController.debug(`param 'id' recibed: ${id}`);
-    loggerController.debug(`route especified: persons`);
+    loggerController.debug(`route especified: users`);
     try {
         resp = await FBCache.delete(service.FIRESTORE, "users", id);
         if(resp.updateCache)
             loggerController.info(`[${context}] delete refreshed cache`);
         else
             loggerController.warn(`[${context}] delete don't refreshed cache`);
-        loggerController.debug(`FBCache response: ${resp}`);
+        loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
         next(error);
