@@ -1,5 +1,5 @@
 import { loggerController } from "../logger/logger.controller";
-import { FBCache, service } from "fbcache";
+import { FBCache } from "fbcache";
 const util = require('util')
 
 const controller = {};
@@ -9,8 +9,9 @@ const context = "Users Controller"
 controller.getAll = async (req, res, next) => {
     loggerController.debug(`[${context}] getAll`);
     loggerController.debug(`route especified: users`);
+    let fbc = new FBCache();
     try {
-        const resp = await FBCache.get(service.FIRESTORE, "users");
+        const resp = await fbc.firestore().collection("users").get();
         if(resp.cache)
             loggerController.info(`[${context}] get users from cache`);
         else
@@ -25,11 +26,12 @@ controller.getAll = async (req, res, next) => {
 controller.insert = async (req, res, next) => {
     const info = req.body;
     let resp = null;
+    let fbc = new FBCache();
     loggerController.debug(`[${context}] insert`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: users`);
     try {
-        resp = await FBCache.insert(service.FIRESTORE, "users", info);
+        resp = await fbc.firestore().collection("users").add(info);
         if(resp.updateCache)
             loggerController.info(`[${context}] insert refreshed cache`);
         else
@@ -45,12 +47,13 @@ controller.insertWithID = async (req, res, next) => {
     const info = req.body;
     const id = req.params.id;
     let resp = null;
+    let fbc = new FBCache();
     loggerController.debug(`[${context}] insertWithID`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: users`);
     try {
-        resp = await FBCache.insert(service.FIRESTORE, "users", info, id);
+        resp = await fbc.firestore().collection("users").doc(id).set(info);
         if(resp.updateCache)
             loggerController.info(`[${context}] insert refreshed cache`);
         else
@@ -66,12 +69,13 @@ controller.update = async (req, res, next) => {
     const info = req.body;
     const id = req.params.id;
     let resp = null;
+    let fbc = new FBCache();
     loggerController.debug(`[${context}] update`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: users`);
     try {
-        resp = await FBCache.update(service.FIRESTORE, "users", info, id);
+        resp = await fbc.firestore().collection("users").doc(id).update(info);
         if(resp.updateCache)
             loggerController.info(`[${context}] update refreshed cache`);
         else
@@ -86,11 +90,12 @@ controller.update = async (req, res, next) => {
 controller.delete = async (req, res, next) => {
     const id = req.params.id;
     let resp = null;
+    let fbc = new FBCache();
     loggerController.debug(`[${context}] delete`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`route especified: users`);
     try {
-        resp = await FBCache.delete(service.FIRESTORE, "users", id);
+        resp = await fbc.firestore().collection("users").doc(id).delete();
         if(resp.updateCache)
             loggerController.info(`[${context}] delete refreshed cache`);
         else

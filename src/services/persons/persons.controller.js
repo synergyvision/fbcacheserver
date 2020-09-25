@@ -1,5 +1,5 @@
 import { loggerController } from "../logger/logger.controller";
-import { FBCache, service, FBCacheR } from "fbcache";
+import { FBCache } from "fbcache";
 const util = require('util')
 
 const controller = {};
@@ -9,7 +9,7 @@ const context = "Persons Controller"
 controller.getAll = async (req, res, next) => {
     loggerController.debug(`[${context}] getAll`);
     loggerController.debug(`route especified: persons`);
-    let fbc = new FBCacheR();
+    let fbc = new FBCache();
     try {
         const resp = await fbc.database().ref("persons").once();
         if(resp.cache)
@@ -26,7 +26,7 @@ controller.getAll = async (req, res, next) => {
 controller.insert = async (req, res, next) => {
     const info = req.body;
     let resp = null;
-    let fbc = new FBCacheR();
+    let fbc = new FBCache();
     loggerController.debug(`[${context}] insert`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: persons`);
@@ -47,7 +47,7 @@ controller.insertWithID = async (req, res, next) => {
     const info = req.body;
     const id = req.params.id;
     let resp = null;
-    let fbc = new FBCacheR();
+    let fbc = new FBCache();
     loggerController.debug(`[${context}] insertWithID`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
@@ -69,7 +69,7 @@ controller.update = async (req, res, next) => {
     const info = req.body;
     const id = req.params.id;
     let resp = null;
-    let fbc = new FBCacheR();
+    let fbc = new FBCache();
     loggerController.debug(`[${context}] update`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
@@ -90,7 +90,7 @@ controller.update = async (req, res, next) => {
 controller.delete = async (req, res, next) => {
     const id = req.params.id;
     let resp = null;
-    let fbc = new FBCacheR();
+    let fbc = new FBCache();
     loggerController.debug(`[${context}] delete`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`route especified: persons`);

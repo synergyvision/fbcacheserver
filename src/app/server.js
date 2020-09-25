@@ -4,16 +4,16 @@ import axios from "axios";
 import { config } from "../enviroment";
 import { logger } from "../utils/logger";
 import { loggerController } from "../services/logger/logger.controller";
-import { FBCache } from "fbcache";
+import { initFBCache } from "fbcache";
 import { apiRouter } from "../routes/api.routes";
 
-const initFBCache = async (credential) => {
+const initFBC = async (credential) => {
     let fbcConfig = null;
     if (config.CONFIG === "local"){
         fbcConfig = require(config.CONFIG_LOCATION);
         if(fbcConfig.logs)
             loggerController.setLevel(fbcConfig.logs)
-        FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+        initFBCache(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
         loggerController.info("FBCache is initialized - config in local");
     }
     else if (config.CONFIG === "web") {
@@ -21,7 +21,7 @@ const initFBCache = async (credential) => {
         fbcConfig = response.data;
         if(fbcConfig.logs)
             loggerController.setLevel(fbcConfig.logs)
-        FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+        initFBCache(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
         loggerController.info("FBCache is initialized - config in web");
     }
 };
@@ -39,7 +39,7 @@ const firebaseCredential = {
     client_x509_cert_url: config.CREDENTIAL_FILE_CLIENT_CERT
 };
 
-initFBCache(firebaseCredential);
+initFBC(firebaseCredential);
 export const app = express();
 
 // MIDDLEWARES
