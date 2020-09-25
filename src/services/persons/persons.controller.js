@@ -31,7 +31,7 @@ controller.insert = async (req, res, next) => {
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: persons`);
     try {
-        resp = await FBCache.insert(service.REAL_TIME, "persons", info);
+        resp = await fbc.database().ref().child("persons").push(info);
         if(resp.updateCache)
             loggerController.info(`[${context}] insert refreshed cache`);
         else
@@ -69,12 +69,13 @@ controller.update = async (req, res, next) => {
     const info = req.body;
     const id = req.params.id;
     let resp = null;
+    let fbc = new FBCacheR();
     loggerController.debug(`[${context}] update`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: persons`);
     try {
-        resp = await FBCache.update(service.REAL_TIME, "persons", info, id);
+        resp = await fbc.database().ref("persons").child(id).update(info);
         if(resp.updateCache)
             loggerController.info(`[${context}] update refreshed cache`);
         else
@@ -89,11 +90,12 @@ controller.update = async (req, res, next) => {
 controller.delete = async (req, res, next) => {
     const id = req.params.id;
     let resp = null;
+    let fbc = new FBCacheR();
     loggerController.debug(`[${context}] delete`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`route especified: persons`);
     try {
-        resp = await FBCache.delete(service.REAL_TIME, "persons", id);
+        resp = await fbc.database().ref("persons").child(id).remove();
         if(resp.updateCache)
             loggerController.info(`[${context}] delete refreshed cache`);
         else
