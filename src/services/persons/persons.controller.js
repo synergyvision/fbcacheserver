@@ -1,5 +1,5 @@
 import { loggerController } from "../logger/logger.controller";
-import { FBCache, service } from "fbcache";
+import { FBCache, service, FBCacheR } from "fbcache";
 const util = require('util')
 
 const controller = {};
@@ -9,8 +9,9 @@ const context = "Persons Controller"
 controller.getAll = async (req, res, next) => {
     loggerController.debug(`[${context}] getAll`);
     loggerController.debug(`route especified: persons`);
+    let fbc = new FBCacheR();
     try {
-        const resp = await FBCache.get(service.REAL_TIME, "persons");
+        const resp = await fbc.database().ref("persons").once();
         if(resp.cache)
             loggerController.info(`[${context}] get persons from cache`);
         else
@@ -25,6 +26,7 @@ controller.getAll = async (req, res, next) => {
 controller.insert = async (req, res, next) => {
     const info = req.body;
     let resp = null;
+    let fbc = new FBCacheR();
     loggerController.debug(`[${context}] insert`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: persons`);
@@ -45,12 +47,13 @@ controller.insertWithID = async (req, res, next) => {
     const info = req.body;
     const id = req.params.id;
     let resp = null;
+    let fbc = new FBCacheR();
     loggerController.debug(`[${context}] insertWithID`);
     loggerController.debug(`param 'id' recibed: ${id}`);
     loggerController.debug(`body recibed: ${util.inspect(info, {showHidden: false, depth: null})}`);
     loggerController.debug(`route especified: persons`);
     try {
-        resp = await FBCache.insert(service.REAL_TIME, "persons", info, id);
+        resp = await fbc.database().ref("persons").child(id).set(info);
         if(resp.updateCache)
             loggerController.info(`[${context}] insert refreshed cache`);
         else
