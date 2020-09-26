@@ -17,4 +17,5 @@ export const config = {
     CREDENTIAL_FILE_CLIENT_CERT: process.env.FBCACHE_FIREBASE_CREDENTIAL_FILE_CLIENT_CERT,
     CONFIG: process.env.CONFIG,
     CONFIG_LOCATION: process.env.CONFIG_LOCATION,
+    NODE_ENV: process.env.NODE_ENV
 }
