@@ -3,21 +3,26 @@ import morgan from 'morgan';
 import axios from "axios";
 import { config } from "../enviroment";
 import { logger } from "../utils/logger";
-import { FBCache } from "fbcache";
+import { loggerController } from "../services/logger/logger.controller";
+import { initFBCache } from "fbcache";
 import { apiRouter } from "../routes/api.routes";
 
-const initFBCache = async (credential) => {
+const initFBC = async (credential) => {
     let fbcConfig = null;
     if (config.CONFIG === "local"){
         fbcConfig = require(config.CONFIG_LOCATION);
-        FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
-        logger.info("FBCache is initialized - config in local");
+        if(fbcConfig.logs)
+            loggerController.setLevel(fbcConfig.logs)
+        initFBCache(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+        loggerController.info("FBCache is initialized - config in local");
     }
     else if (config.CONFIG === "web") {
         const response = await axios.get(config.CONFIG_LOCATION);
         fbcConfig = response.data;
-        FBCache.init(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
-        logger.info("FBCache is initialized - config in web");
+        if(fbcConfig.logs)
+            loggerController.setLevel(fbcConfig.logs)
+        initFBCache(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
+        loggerController.info("FBCache is initialized - config in web");
     }
 };
 
@@ -34,7 +39,7 @@ const firebaseCredential = {
     client_x509_cert_url: config.CREDENTIAL_FILE_CLIENT_CERT
 };
 
-initFBCache(firebaseCredential);
+initFBC(firebaseCredential);
 export const app = express();
 
 // MIDDLEWARES
@@ -52,7 +57,7 @@ app.use('/api', apiRouter);
 
 // ERROR HANDLER
 app.use(function(err, req, res, next) {
-    logger.error(err.message);
+    loggerController.error(err.message);
     res.status(500).send('Something broke!');
 });
 
