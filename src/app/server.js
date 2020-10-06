@@ -13,16 +13,18 @@ const initFBC = async (credential) => {
         fbcConfig = require(config.CONFIG_LOCATION);
         if(fbcConfig.logs)
             loggerController.setLevel(fbcConfig.logs)
-        initFBCache(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
-        loggerController.info("FBCache is initialized - config in local");
+        await initFBCache(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential)
+            .then(() => loggerController.info("FBCache is initialized - config in local"))
+            .catch((error) => loggerController.error(error.message))
     }
     else if (config.CONFIG === "web") {
         const response = await axios.get(config.CONFIG_LOCATION);
         fbcConfig = response.data;
         if(fbcConfig.logs)
             loggerController.setLevel(fbcConfig.logs)
-        initFBCache(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential);
-        loggerController.info("FBCache is initialized - config in web");
+        await initFBCache(fbcConfig, config.URL, config.CREDENTIAL_TYPE, credential)
+            .then(() => loggerController.info("FBCache is initialized - config in web"))
+            .catch((error) => loggerController.error(error.message))
     }
 };
 
@@ -58,7 +60,7 @@ app.use('/api', apiRouter);
 // ERROR HANDLER
 app.use(function(err, req, res, next) {
     loggerController.error(err.message);
-    res.status(500).send('Something broke!');
+    res.status(500).send({ error: "SERVER_ERROR", message: err.message });
 });
 
 process.on('unhandledRejection', (reason, p) => {});
