@@ -4,7 +4,7 @@
         {
             "name": "users",
             "refresh": "10 s",
-            "read_only": true
+            "read_only": aveces
         }
     ],
     "realtime": [
