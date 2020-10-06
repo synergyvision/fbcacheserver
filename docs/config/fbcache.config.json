@@ -2,9 +2,9 @@
     "read_only": true,    
     "firestore": [
         {
-            "name": "users",
+            "name": "usuarios",
             "refresh": "10 s",
-            "read_only": aveces
+            "read_only": true
         }
     ],
     "realtime": [
