@@ -3,8 +3,8 @@
     "firestore": [
         {
             "name": "users",
-            "refresh": "30 s",
-            "read_only": false
+            "refresh": "10 s",
+            "read_only": true
         }
     ],
     "realtime": [
