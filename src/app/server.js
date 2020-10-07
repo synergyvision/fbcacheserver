@@ -56,6 +56,10 @@ app.get('/', (req, res) => {
     res.json("FBCache Server is running")
 });
 app.use('/api', apiRouter);
+app.get('*', (req, res) => {
+    loggerController.warn("Invalid route")
+    res.status(404).send({ error: "NOT_FOUND", message: "Invalid route" })
+})
 
 // ERROR HANDLER
 app.use(function(err, req, res, next) {

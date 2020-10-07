@@ -1,6 +1,6 @@
 {
   "name": "fbcache-servidor",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Test server for the FBCache library",
   "main": "dist/index.js",
   "directories": {
@@ -36,7 +36,7 @@
     "axios": "^0.20.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "fbcache": "git+https://github.com/synergyvision/fbcache.git#dev",
+    "fbcache": "git+https://github.com/synergyvision/fbcache.git#master",
     "morgan": "^1.10.0",
     "winston": "^3.3.3"
   },

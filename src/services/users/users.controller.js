@@ -7,15 +7,19 @@ const controller = {};
 const context = "Users Controller"
 
 controller.getAll = async (req, res, next) => {
+    let route = "users";
+    const id = req.query.id;
+    if(id)
+        route = route + "/" + id;
     loggerController.debug(`[${context}] getAll`);
-    loggerController.debug(`route especified: users`);
+    loggerController.debug(`route especified: ${route}`);
     let fbc = new FBCache();
     try {
-        const resp = await fbc.firestore().collection("users").get();
+        const resp = await fbc.firestore().collection(route).get();
         if(resp.cache)
-            loggerController.info(`[${context}] get users from cache`);
+            loggerController.info(`[${context}] get ${route} from cache`);
         else
-            loggerController.warn(`[${context}] get users from Firestore`);
+            loggerController.warn(`[${context}] get ${route} from Firestore`);
         loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
@@ -33,9 +37,9 @@ controller.insert = async (req, res, next) => {
     try {
         resp = await fbc.firestore().collection("users").add(info);
         if(resp.updateCache)
-            loggerController.info(`[${context}] insert refreshed cache`);
+            loggerController.info(`[${context}] insert refresh cache`);
         else
-            loggerController.warn(`[${context}] insert don't refreshed cache`);
+            loggerController.warn(`[${context}] insert don't refresh cache`);
         loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
@@ -55,9 +59,9 @@ controller.insertWithID = async (req, res, next) => {
     try {
         resp = await fbc.firestore().collection("users").doc(id).set(info);
         if(resp.updateCache)
-            loggerController.info(`[${context}] insert refreshed cache`);
+            loggerController.info(`[${context}] insert refresh cache`);
         else
-            loggerController.warn(`[${context}] insert don't refreshed cache`);
+            loggerController.warn(`[${context}] insert don't refresh cache`);
         loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
@@ -77,9 +81,9 @@ controller.update = async (req, res, next) => {
     try {
         resp = await fbc.firestore().collection("users").doc(id).update(info);
         if(resp.updateCache)
-            loggerController.info(`[${context}] update refreshed cache`);
+            loggerController.info(`[${context}] update refresh cache`);
         else
-            loggerController.warn(`[${context}] update don't refreshed cache`);
+            loggerController.warn(`[${context}] update don't refresh cache`);
         loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
@@ -97,9 +101,9 @@ controller.delete = async (req, res, next) => {
     try {
         resp = await fbc.firestore().collection("users").doc(id).delete();
         if(resp.updateCache)
-            loggerController.info(`[${context}] delete refreshed cache`);
+            loggerController.info(`[${context}] delete refresh cache`);
         else
-            loggerController.warn(`[${context}] delete don't refreshed cache`);
+            loggerController.warn(`[${context}] delete don't refresh cache`);
         loggerController.debug(`FBCache response: ${util.inspect(resp, {showHidden: false, depth: null})}`);
         res.json(resp);
     } catch (error) {
