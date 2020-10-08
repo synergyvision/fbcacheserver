@@ -11,7 +11,7 @@ controller.getAll = async (req, res, next) => {
     const id = req.query.id;
     if(id)
         route = route + "/" + id;
-    loggerController.debug(`[${context}] getAll`);
+    loggerController.debug(`[${context}] get`);
     loggerController.debug(`route especified: ${route}`);
     let fbc = new FBCache();
     try {

@@ -66,5 +66,3 @@ app.use(function(err, req, res, next) {
     loggerController.error(err.message);
     res.status(500).send({ error: "SERVER_ERROR", message: err.message });
 });
-
-process.on('unhandledRejection', (reason, p) => {});
