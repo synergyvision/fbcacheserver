@@ -8,7 +8,7 @@ const context = "Persons Controller"
 
 controller.getAll = async (req, res, next) => {
     let route = "persons";
-    const id = req.query.id;
+    const id = req.params.id;
     if(id)
         route = route + "/" + id;
     loggerController.debug(`[${context}] get`);

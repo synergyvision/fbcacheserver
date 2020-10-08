@@ -3,6 +3,7 @@ import { personsController } from "./persons.controller";
 const router = Router();
 
 router.get('/', personsController.getAll)
+router.get('/:id(*)', personsController.getAll)
 router.post('/', personsController.insert)
 router.post('/:id', personsController.insertWithID)
 router.put('/:id', personsController.update)
